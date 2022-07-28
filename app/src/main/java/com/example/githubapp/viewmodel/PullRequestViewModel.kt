@@ -29,6 +29,8 @@ class PullRequestViewModel @Inject constructor(private val apiRepository: APIRep
             } else {
                 ResponseState.Empty
             }
+        } else if (responseResult.code() == 404) {
+            ResponseState.Empty
         } else {
             ResponseState.Error
         }
