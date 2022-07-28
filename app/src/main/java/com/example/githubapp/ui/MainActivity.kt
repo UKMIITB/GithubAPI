@@ -33,8 +33,8 @@ class MainActivity : AppCompatActivity() {
         }
 
         val bundle = Bundle()
-        bundle.putString(Constants.OWNERNAME, binding.ownerEt.text.toString())
-        bundle.putString(Constants.REPONAME, binding.repoEt.text.toString())
+        bundle.putString(Constants.OWNERNAME, binding.ownerEt.text.toString().trim())
+        bundle.putString(Constants.REPONAME, binding.repoEt.text.toString().trim())
         val pullRequestActivityIntent = Intent(this, PullRequestActivity::class.java)
         pullRequestActivityIntent.putExtras(bundle)
         startActivity(pullRequestActivityIntent)
