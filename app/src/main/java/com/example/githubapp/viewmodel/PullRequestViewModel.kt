@@ -8,7 +8,7 @@ import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
-class MainActivityViewModel @Inject constructor(private val apiRepository: APIRepository) :
+class PullRequestViewModel @Inject constructor(private val apiRepository: APIRepository) :
     ViewModel() {
 
     suspend fun getClosedPullRequests(owner: String, repo: String) =

@@ -1,11 +1,11 @@
 package com.example.githubapp.ui
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.lifecycleScope
 import com.example.githubapp.databinding.ActivityMainBinding
-import kotlinx.coroutines.launch
+import com.example.githubapp.helper.Constants
 
 class MainActivity : AppCompatActivity() {
 
@@ -32,10 +32,12 @@ class MainActivity : AppCompatActivity() {
             return
         }
 
-        lifecycleScope.launch {
-
-        }
-
+        val bundle = Bundle()
+        bundle.putString(Constants.OWNERNAME, binding.ownerEt.text.toString())
+        bundle.putString(Constants.REPONAME, binding.repoEt.text.toString())
+        val pullRequestActivityIntent = Intent(this, PullRequestActivity::class.java)
+        pullRequestActivityIntent.putExtras(bundle)
+        startActivity(pullRequestActivityIntent)
     }
 
     private fun validateInputFields(): Boolean {
