@@ -1,6 +1,7 @@
 package com.example.githubapp.ui
 
 import android.os.Bundle
+import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
@@ -34,6 +35,7 @@ class PullRequestActivity : AppCompatActivity() {
         pullRequestAdapter = PullRequestAdapter()
         binding.pullRequestRv.adapter = pullRequestAdapter
         binding.pullRequestRv.layoutManager = LinearLayoutManager(this)
+        binding.progressBar.visibility = View.VISIBLE
     }
 
     private fun fetchDataFromBundle() {
@@ -44,9 +46,10 @@ class PullRequestActivity : AppCompatActivity() {
         }
 
         lifecycleScope.launch(Dispatchers.Main) {
-            val pullRequestList =
+            val pullRequestResponseState =
                 pullRequestViewModel.getClosedPullRequests(owner = ownerName, repo = repoName)
-            pullRequestAdapter.submitList(pullRequestList)
+            pullRequestAdapter.submitResponseState(pullRequestResponseState)
+            binding.progressBar.visibility = View.GONE
         }
     }
 }

@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.githubapp.databinding.ItemPullRequestBinding
 import com.example.githubapp.model.PullRequest
+import com.example.githubapp.model.ResponseState
 
 class PullRequestAdapter : RecyclerView.Adapter<PullRequestAdapter.PullRequestViewHolder>() {
 
@@ -41,8 +42,18 @@ class PullRequestAdapter : RecyclerView.Adapter<PullRequestAdapter.PullRequestVi
         return pullRequestList.size
     }
 
-    fun submitList(pullRequestList: List<PullRequest>) {
-        this.pullRequestList = pullRequestList
-        notifyDataSetChanged()
+    fun submitResponseState(responseState: ResponseState) {
+        handleUIBasedOnResponseState(responseState)
+    }
+
+    private fun handleUIBasedOnResponseState(responseState: ResponseState) {
+        if (responseState is ResponseState.Success) {
+            pullRequestList = responseState.pullRequestList
+            notifyDataSetChanged()
+        } else if (responseState is ResponseState.Empty) {
+            pullRequestList = emptyList() // show no result
+        } else {
+            pullRequestList = emptyList() // show error state
+        }
     }
 }
