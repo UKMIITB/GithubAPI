@@ -7,7 +7,6 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.githubapp.databinding.ActivityPullRequestBinding
 import com.example.githubapp.helper.Constants
-import com.example.githubapp.model.PullRequest
 import com.example.githubapp.ui.adapter.PullRequestAdapter
 import com.example.githubapp.viewmodel.PullRequestViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -20,7 +19,6 @@ class PullRequestActivity : AppCompatActivity() {
     private var ownerName = ""
     private var repoName = ""
     private lateinit var pullRequestAdapter: PullRequestAdapter
-    private val pullRequestList: List<PullRequest> = emptyList()
     private val pullRequestViewModel: PullRequestViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -32,7 +30,7 @@ class PullRequestActivity : AppCompatActivity() {
     }
 
     private fun init() {
-        pullRequestAdapter = PullRequestAdapter(pullRequestList)
+        pullRequestAdapter = PullRequestAdapter()
         binding.pullRequestRv.adapter = pullRequestAdapter
         binding.pullRequestRv.layoutManager = LinearLayoutManager(this)
     }
