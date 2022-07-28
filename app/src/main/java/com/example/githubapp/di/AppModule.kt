@@ -5,20 +5,22 @@ import com.example.githubapp.repository.retrofit.APIService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.components.ActivityComponent
+import dagger.hilt.components.SingletonComponent
 import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
 
 @Module
-@InstallIn(ActivityComponent::class)
+@InstallIn(SingletonComponent::class)
 object AppModule {
 
     @Provides
-    fun provideRetrofit(): Retrofit {
-        return Retrofit.Builder()
-            .baseUrl(Endpoints.BASE_URL)
-            .build()
-    }
+    @Singleton
+    fun provideRetrofit(): Retrofit = Retrofit.Builder()
+        .baseUrl(Endpoints.BASE_URL)
+        .addConverterFactory(GsonConverterFactory.create())
+        .build()
+
 
     @Provides
     @Singleton

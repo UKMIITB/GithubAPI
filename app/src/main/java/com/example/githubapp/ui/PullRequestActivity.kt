@@ -10,6 +10,7 @@ import com.example.githubapp.helper.Constants
 import com.example.githubapp.ui.adapter.PullRequestAdapter
 import com.example.githubapp.viewmodel.PullRequestViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -26,7 +27,7 @@ class PullRequestActivity : AppCompatActivity() {
         binding = ActivityPullRequestBinding.inflate(layoutInflater)
         setContentView(binding.root)
         init()
-        fetchDataFromBundle(savedInstanceState)
+        fetchDataFromBundle()
     }
 
     private fun init() {
@@ -35,14 +36,14 @@ class PullRequestActivity : AppCompatActivity() {
         binding.pullRequestRv.layoutManager = LinearLayoutManager(this)
     }
 
-    private fun fetchDataFromBundle(bundle: Bundle?) {
+    private fun fetchDataFromBundle() {
+        val bundle = intent.extras
         bundle?.let {
             ownerName = it.getString(Constants.OWNERNAME, "")
             repoName = it.getString(Constants.REPONAME, "")
         }
 
-        lifecycleScope.launch {
-
+        lifecycleScope.launch(Dispatchers.Main) {
             val pullRequestList =
                 pullRequestViewModel.getClosedPullRequests(owner = ownerName, repo = repoName)
             pullRequestAdapter.submitList(pullRequestList)
