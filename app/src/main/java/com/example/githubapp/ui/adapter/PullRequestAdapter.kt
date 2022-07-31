@@ -28,7 +28,6 @@ class PullRequestAdapter(private val pullRequestInterface: PullRequestInterface)
                 ): Boolean {
                     return oldItem == newItem
                 }
-
             }
     }
 
