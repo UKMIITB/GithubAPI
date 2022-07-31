@@ -99,11 +99,12 @@ class PullRequestActivity : AppCompatActivity() {
                         ?: loadState.prepend as? LoadState.Error
 
                     errorState?.let {
+                        binding.pullRequestErrorContainer.visibility = View.VISIBLE
                         Toast.makeText(
                             this@PullRequestActivity, "\uD83D\uDE28 Wooops ${it.error}",
                             Toast.LENGTH_LONG
                         ).show()
-                    }
+                    } ?: kotlin.run { binding.pullRequestErrorContainer.visibility = View.GONE }
                 }
             }
         }
