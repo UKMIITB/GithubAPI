@@ -5,9 +5,9 @@ import javax.inject.Inject
 
 class APIRepository @Inject constructor(private val apiService: APIService) {
 
-    suspend fun getClosedPullRequests(owner: String, repo: String) =
-        apiService.getClosedPullRequests(
-            owner = owner,
-            repo = repo
+    fun getPullRequestPagingSource(owner: String, repo: String) =
+        PullRequestPagingSource(
+            apiService = apiService,
+            owner = owner, repo = repo
         )
 }

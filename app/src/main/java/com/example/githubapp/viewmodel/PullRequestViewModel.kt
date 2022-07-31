@@ -1,39 +1,32 @@
 package com.example.githubapp.viewmodel
 
 import androidx.lifecycle.ViewModel
-import com.example.githubapp.model.ResponseState
+import androidx.lifecycle.viewModelScope
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
+import androidx.paging.cachedIn
+import com.example.githubapp.model.PullRequest
 import com.example.githubapp.repository.APIRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 @HiltViewModel
 class PullRequestViewModel @Inject constructor(private val apiRepository: APIRepository) :
     ViewModel() {
 
-    suspend fun getClosedPullRequests(owner: String, repo: String): ResponseState {
+    var ownerName = ""
+    var repoName = ""
 
-        val responseResult = withContext(Dispatchers.IO) {
-            apiRepository.getClosedPullRequests(
-                owner = owner,
-                repo = repo
+    val pullRequestItems: Flow<PagingData<PullRequest>> = Pager(
+        config = PagingConfig(pageSize = 20, enablePlaceholders = false),
+        pagingSourceFactory = {
+            apiRepository.getPullRequestPagingSource(
+                owner = ownerName,
+                repo = repoName
             )
         }
-
-        val responseBody = responseResult.body()
-
-        return if (responseResult.code() == 200) {
-            if (responseBody != null) {
-                ResponseState.Success(responseBody)
-            } else {
-                ResponseState.Empty
-            }
-        } else if (responseResult.code() == 404) {
-            ResponseState.Empty
-        } else {
-            ResponseState.Error
-        }
-    }
-
+    ).flow
+        .cachedIn(viewModelScope)
 }

@@ -5,7 +5,10 @@ import android.os.Bundle
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
+import androidx.paging.LoadState
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.githubapp.databinding.ActivityPullRequestBinding
@@ -16,14 +19,13 @@ import com.example.githubapp.ui.adapter.PullRequestAdapter
 import com.example.githubapp.viewmodel.PullRequestViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class PullRequestActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityPullRequestBinding
-    private var ownerName = ""
-    private var repoName = ""
     private lateinit var pullRequestAdapter: PullRequestAdapter
     private val pullRequestViewModel: PullRequestViewModel by viewModels()
 
@@ -62,15 +64,27 @@ class PullRequestActivity : AppCompatActivity() {
     private fun fetchDataFromBundle() {
         val bundle = intent.extras
         bundle?.let {
-            ownerName = it.getString(Constants.OWNERNAME, "")
-            repoName = it.getString(Constants.REPONAME, "")
+            pullRequestViewModel.ownerName = it.getString(Constants.OWNERNAME, "")
+            pullRequestViewModel.repoName = it.getString(Constants.REPONAME, "")
         }
 
         lifecycleScope.launch(Dispatchers.Main) {
-            val pullRequestResponseState =
-                pullRequestViewModel.getClosedPullRequests(owner = ownerName, repo = repoName)
-            pullRequestAdapter.submitResponseState(pullRequestResponseState)
-            binding.progressBar.visibility = View.GONE
+
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                pullRequestViewModel.pullRequestItems.collectLatest {
+                    pullRequestAdapter.submitData(it)
+                }
+            }
+        }
+
+        lifecycleScope.launch(Dispatchers.Main) {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                pullRequestAdapter.loadStateFlow.collect {
+                    binding.progressBar.visibility = if (it.source.prepend is LoadState.Loading ||
+                        it.source.append is LoadState.Loading
+                    ) View.VISIBLE else View.GONE
+                }
+            }
         }
     }
 }
