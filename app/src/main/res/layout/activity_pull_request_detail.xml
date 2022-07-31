@@ -9,7 +9,7 @@
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/user_profile_iv"
         android:layout_width="match_parent"
-        android:layout_height="250dp"
+        android:layout_height="300dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -18,36 +18,49 @@
         android:id="@+id/pull_request_title_tv"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
         android:layout_marginTop="8dp"
+        android:textSize="20sp"
+        android:textStyle="bold"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/user_profile_iv" />
+        app:layout_constraintTop_toBottomOf="@id/user_profile_iv"
+        tools:text="Dummy Github Title" />
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/user_name_tv"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
         android:layout_marginTop="8dp"
+        android:textSize="16sp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/pull_request_title_tv" />
+        app:layout_constraintTop_toBottomOf="@id/pull_request_title_tv"
+        tools:text="Creator: Ujjwal Kumar" />
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/created_date_tv"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
         android:layout_marginTop="8dp"
+        android:textSize="16sp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/user_name_tv" />
+        app:layout_constraintTop_toBottomOf="@id/user_name_tv"
+        tools:text="Created On: 07-May-2021, 3:34:42 pm" />
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/closed_date_tv"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
         android:layout_marginTop="8dp"
+        android:textSize="16sp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/created_date_tv" />
+        app:layout_constraintTop_toBottomOf="@id/created_date_tv"
+        tools:text="Closed On: 07-May-2021, 3:34:42 pm" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
