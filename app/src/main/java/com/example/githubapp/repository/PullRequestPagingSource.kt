@@ -34,7 +34,7 @@ class PullRequestPagingSource @Inject constructor(
         var isNextKeyPresent = false
         val linkHeader = responseResult.headers().get("link")
         linkHeader?.let {
-            if (it.contains("rel='next'"))
+            if (it.contains("rel=\"next\""))
                 isNextKeyPresent = true
         }
 
