@@ -93,18 +93,40 @@ class PullRequestActivity : AppCompatActivity() {
                     binding.progressBar.visibility =
                         if (loadState.source.refresh is LoadState.Loading) View.VISIBLE else View.GONE
 
-                    val errorState = loadState.source.append as? LoadState.Error
-                        ?: loadState.source.prepend as? LoadState.Error
-                        ?: loadState.append as? LoadState.Error
+                    val errorState = loadState.append as? LoadState.Error
                         ?: loadState.prepend as? LoadState.Error
+                        ?: loadState.refresh as? LoadState.Error
+                        ?: loadState.source.append as? LoadState.Error
+                        ?: loadState.source.prepend as? LoadState.Error
+                        ?: loadState.source.refresh as? LoadState.Error
+
 
                     errorState?.let {
-                        binding.pullRequestErrorContainer.visibility = View.VISIBLE
+
+                        when (it.error) {
+                            Constants.NO_REPOSITORY_EXIST_THROWABLE -> {
+                                binding.pullRequestNotExistContainer.visibility = View.VISIBLE
+                                binding.pullRequestErrorContainer.visibility = View.GONE
+                            }
+
+                            Constants.SERVER_ERROR_OCCURRED_THROWABLE -> {
+                                binding.pullRequestNotExistContainer.visibility = View.GONE
+                                binding.pullRequestErrorContainer.visibility = View.VISIBLE
+                            }
+
+                            else -> {
+                                binding.pullRequestNotExistContainer.visibility = View.GONE
+                                binding.pullRequestErrorContainer.visibility = View.VISIBLE
+                            }
+                        }
                         Toast.makeText(
-                            this@PullRequestActivity, "\uD83D\uDE28 Wooops ${it.error}",
-                            Toast.LENGTH_LONG
+                            this@PullRequestActivity, "\uD83D\uDE28 Wooops ${it.error.message}",
+                            Toast.LENGTH_SHORT
                         ).show()
-                    } ?: kotlin.run { binding.pullRequestErrorContainer.visibility = View.GONE }
+                    } ?: kotlin.run {
+                        binding.pullRequestErrorContainer.visibility = View.GONE
+                        binding.pullRequestNotExistContainer.visibility = View.GONE
+                    }
                 }
             }
         }
