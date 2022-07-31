@@ -8,6 +8,7 @@ import com.example.githubapp.databinding.ItemPullRequestDefaultBinding
 import com.example.githubapp.databinding.ItemPullRequestEmptyBinding
 import com.example.githubapp.databinding.ItemPullRequestErrorBinding
 import com.example.githubapp.databinding.ItemPullRequestSuccessBinding
+import com.example.githubapp.helper.DateTimeUtils
 import com.example.githubapp.model.PullRequest
 import com.example.githubapp.model.ResponseState
 
@@ -27,8 +28,8 @@ class PullRequestAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
         fun bindData(pullRequest: PullRequest) {
             binding.pullRequestTitleTv.text = pullRequest.title
-            binding.closedDateTv.text = pullRequest.closed_at
-            binding.createdDateTv.text = pullRequest.created_at
+            binding.closedDateTv.text = DateTimeUtils.getLocalDateStringFromTimeZoneString(pullRequest.closed_at)
+            binding.createdDateTv.text = DateTimeUtils.getLocalDateStringFromTimeZoneString(pullRequest.created_at)
             binding.userNameTv.text = pullRequest.user.name
             Glide.with(binding.userProfileIv.context)
                 .load(pullRequest.user.avatar_url)

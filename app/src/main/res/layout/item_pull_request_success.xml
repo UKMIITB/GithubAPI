@@ -10,6 +10,7 @@
         android:id="@+id/user_profile_iv"
         android:layout_width="140dp"
         android:layout_height="140dp"
+        android:paddingLeft="4dp"
         android:src="@color/cardview_dark_background"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
