@@ -5,6 +5,7 @@
       <map>
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.22056159420289856" />
         <entry key="app/src/main/res/layout/activity_pull_request.xml" value="0.2554347826086957" />
+        <entry key="app/src/main/res/layout/activity_pull_request_detail.xml" value="0.2604166666666667" />
         <entry key="app/src/main/res/layout/item_pull_request.xml" value="0.22056159420289856" />
         <entry key="app/src/main/res/layout/item_pull_request_default.xml" value="0.22056159420289856" />
         <entry key="app/src/main/res/layout/item_pull_request_empty.xml" value="0.22056159420289856" />

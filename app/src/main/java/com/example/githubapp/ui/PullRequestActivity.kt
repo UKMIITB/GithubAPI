@@ -1,7 +1,7 @@
 package com.example.githubapp.ui
 
+import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.githubapp.databinding.ActivityPullRequestBinding
 import com.example.githubapp.helper.Constants
+import com.example.githubapp.helper.Constants.Companion.PULLREQUESTDATA
 import com.example.githubapp.model.PullRequest
 import com.example.githubapp.ui.adapter.PullRequestAdapter
 import com.example.githubapp.viewmodel.PullRequestViewModel
@@ -36,7 +37,12 @@ class PullRequestActivity : AppCompatActivity() {
 
     private val pullRequestInterface = object : PullRequestInterface {
         override fun onPullRequestClicked(pullRequest: PullRequest) {
-            Log.d("customTag", "$pullRequest")
+            val pullRequestDetailActivityIntent =
+                Intent(this@PullRequestActivity, PullRequestDetailActivity::class.java).apply {
+                    putExtra(PULLREQUESTDATA, pullRequest)
+                }
+
+            startActivity(pullRequestDetailActivityIntent)
         }
     }
 

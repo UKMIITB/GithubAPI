@@ -1,7 +1,10 @@
 package com.example.githubapp.model
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.android.parcel.Parcelize
 
+@Parcelize
 data class PullRequest(
     @SerializedName("title")
     val title: String,
@@ -11,4 +14,4 @@ data class PullRequest(
     val closed_at: String,
     @SerializedName("user")
     val user: User
-)
+) : Parcelable
