@@ -5,6 +5,7 @@ import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.githubapp.databinding.ActivityPullRequestBinding
 import com.example.githubapp.helper.Constants
@@ -36,6 +37,12 @@ class PullRequestActivity : AppCompatActivity() {
         binding.pullRequestRv.adapter = pullRequestAdapter
         binding.pullRequestRv.layoutManager = LinearLayoutManager(this)
         binding.progressBar.visibility = View.VISIBLE
+        binding.pullRequestRv.addItemDecoration(
+            DividerItemDecoration(
+                this,
+                DividerItemDecoration.VERTICAL
+            )
+        )
     }
 
     private fun fetchDataFromBundle() {

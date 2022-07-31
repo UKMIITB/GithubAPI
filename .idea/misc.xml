@@ -9,6 +9,7 @@
         <entry key="app/src/main/res/layout/item_pull_request_default.xml" value="0.22056159420289856" />
         <entry key="app/src/main/res/layout/item_pull_request_empty.xml" value="0.22056159420289856" />
         <entry key="app/src/main/res/layout/item_pull_request_error.xml" value="0.22056159420289856" />
+        <entry key="app/src/main/res/layout/item_pull_request_success.xml" value="0.22056159420289856" />
       </map>
     </option>
   </component>
