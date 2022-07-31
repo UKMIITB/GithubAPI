@@ -1,6 +1,7 @@
 package com.example.githubapp.ui.adapter
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -11,8 +12,10 @@ import com.example.githubapp.databinding.ItemPullRequestSuccessBinding
 import com.example.githubapp.helper.DateTimeUtils
 import com.example.githubapp.model.PullRequest
 import com.example.githubapp.model.ResponseState
+import com.example.githubapp.ui.PullRequestInterface
 
-class PullRequestAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class PullRequestAdapter(private val pullRequestInterface: PullRequestInterface) :
+    RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private var responseState: ResponseState = ResponseState.Default
 
@@ -23,36 +26,51 @@ class PullRequestAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private val RESPONSE_STATE_ERROR = 3;
 
 
-    class PullRequestSuccessViewHolder(private val binding: ItemPullRequestSuccessBinding) :
-        RecyclerView.ViewHolder(binding.root) {
+    inner class PullRequestSuccessViewHolder(
+        private val binding: ItemPullRequestSuccessBinding,
+        private val pullRequestInterface: PullRequestInterface
+    ) :
+        RecyclerView.ViewHolder(binding.root), View.OnClickListener {
+
+        init {
+            binding.root.setOnClickListener(this)
+        }
 
         fun bindData(pullRequest: PullRequest) {
             binding.pullRequestTitleTv.text = pullRequest.title
-            binding.closedDateTv.text = DateTimeUtils.getLocalDateStringFromTimeZoneString(pullRequest.closed_at)
-            binding.createdDateTv.text = DateTimeUtils.getLocalDateStringFromTimeZoneString(pullRequest.created_at)
+            binding.closedDateTv.text =
+                DateTimeUtils.getLocalDateStringFromTimeZoneString(pullRequest.closed_at)
+            binding.createdDateTv.text =
+                DateTimeUtils.getLocalDateStringFromTimeZoneString(pullRequest.created_at)
             binding.userNameTv.text = pullRequest.user.name
             Glide.with(binding.userProfileIv.context)
                 .load(pullRequest.user.avatar_url)
                 .circleCrop()
                 .into(binding.userProfileIv)
         }
+
+        override fun onClick(v: View?) {
+            if (adapterPosition != RecyclerView.NO_POSITION) {
+                pullRequestInterface.onPullRequestClicked((responseState as ResponseState.Success).pullRequestList[adapterPosition])
+            }
+        }
     }
 
-    class PullRequestEmptyViewHolder(private val binding: ItemPullRequestEmptyBinding) :
+    inner class PullRequestEmptyViewHolder(private val binding: ItemPullRequestEmptyBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
         fun bindData() {
         }
     }
 
-    class PullRequestErrorViewHolder(private val binding: ItemPullRequestErrorBinding) :
+    inner class PullRequestErrorViewHolder(private val binding: ItemPullRequestErrorBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
         fun bindData() {
         }
     }
 
-    class PullRequestDefaultViewHolder(private val binding: ItemPullRequestDefaultBinding) :
+    inner class PullRequestDefaultViewHolder(private val binding: ItemPullRequestDefaultBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
         fun bindData() {
@@ -65,7 +83,7 @@ class PullRequestAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             RESPONSE_STATE_SUCCESS -> PullRequestSuccessViewHolder(
                 ItemPullRequestSuccessBinding.inflate(
                     LayoutInflater.from(parent.context), parent, false
-                )
+                ), pullRequestInterface = pullRequestInterface
             )
 
             RESPONSE_STATE_EMPTY -> PullRequestEmptyViewHolder(
