@@ -3,6 +3,7 @@ package com.example.githubapp.ui
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Lifecycle
@@ -79,10 +80,30 @@ class PullRequestActivity : AppCompatActivity() {
 
         lifecycleScope.launch(Dispatchers.Main) {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                pullRequestAdapter.loadStateFlow.collect {
-                    binding.progressBar.visibility = if (it.source.prepend is LoadState.Loading ||
-                        it.source.append is LoadState.Loading
-                    ) View.VISIBLE else View.GONE
+                pullRequestAdapter.loadStateFlow.collect { loadState ->
+
+                    val isListEmpty =
+                        loadState.refresh is LoadState.NotLoading && pullRequestAdapter.itemCount == 0
+
+                    binding.pullRequestEmptyContainer.visibility =
+                        if (isListEmpty) View.VISIBLE else View.GONE
+
+                    binding.pullRequestRv.visibility = if (!isListEmpty) View.VISIBLE else View.GONE
+
+                    binding.progressBar.visibility =
+                        if (loadState.source.refresh is LoadState.Loading) View.VISIBLE else View.GONE
+
+                    val errorState = loadState.source.append as? LoadState.Error
+                        ?: loadState.source.prepend as? LoadState.Error
+                        ?: loadState.append as? LoadState.Error
+                        ?: loadState.prepend as? LoadState.Error
+
+                    errorState?.let {
+                        Toast.makeText(
+                            this@PullRequestActivity, "\uD83D\uDE28 Wooops ${it.error}",
+                            Toast.LENGTH_LONG
+                        ).show()
+                    }
                 }
             }
         }
